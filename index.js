@@ -14,18 +14,32 @@ app.get('/events', (req, res) => {
     res.setHeader('Connection', 'keep-alive');
     res.flushHeaders(); // Invia subito gli header
 
-    console.log('Client connesso');
+    console.log('Client connesso, invio di 5 eventi...');
 
-    // 2. Invia dati a intervalli regolari
+    let eventCount = 0;
+    const maxEvents = 5;
+
     const intervalId = setInterval(() => {
+        // --- INIZIO LOGICA MODIFICATA ---
+
+        if (eventCount >= maxEvents) {
+            clearInterval(intervalId);
+            res.end(); // <-- COMANDO CRUCIALE: CHIUDE LA CONNESSIONE
+            console.log('Streaming completato, connessione chiusa.');
+            return;
+        }
+
+        eventCount++;
         const date = new Date().toLocaleTimeString();
-        // Formato dell'evento SSE: "data: <messaggio>\n\n"
-        res.write(`data: ${JSON.stringify({ timestamp: date, message: 'Questo è un evento dal server!' })}\n\n`);
+        console.log(`Invio evento ${eventCount}/${maxEvents}`);
+        res.write(`data: ${JSON.stringify({ count: eventCount, timestamp: date, message: 'Questo è un evento dal server!' })}\n\n`);
+
+        // --- FINE LOGICA MODIFICATA ---
     }, 1000);
 
-    // 3. Gestisci la disconnessione del client
+    // Gestisci la disconnessione del client
     req.on('close', () => {
-        console.log('Client disconnesso');
+        console.log('Client disconnesso prematuramente.');
         clearInterval(intervalId);
         res.end();
     });
