@@ -2,7 +2,7 @@ sources:
   bigquery-vendite:
     kind: bigquery
     : ${GOOGLE_CLOUD_}
-    location: ${BIGQUERY_LOCATION:-EU}
+    location: ${BIGQUERY_LOCATION:-US}
 
 tools:
   # Tool principale per NL2SQL con prompt engineering migliorato
