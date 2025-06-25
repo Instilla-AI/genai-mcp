@@ -1,6 +1,0 @@
-langchain
-langchain-google-genai
-google-cloud-bigquery
-google-auth
-fastapi
-uvicorn
