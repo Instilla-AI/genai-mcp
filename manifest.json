@@ -1,0 +1,17 @@
+{
+  "type": "toolbox",
+  "tools": [
+    {
+      "name": "bigquery-nl2sql",
+      "description": "Converte linguaggio naturale in query SQL per BigQuery",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": { "type": "string" }
+        },
+        "required": ["query"]
+      },
+      "run": "bigquery_tool"
+    }
+  ]
+}
