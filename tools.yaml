@@ -1,0 +1,47 @@
+sources:
+  bigquery-vendite:
+    kind: bigquery
+    project: hip-nuova-folati
+    location: US
+
+tools:
+  # Tool principale per NL2SQL
+  vendite-nl2sql:
+    kind: bigquery-execute-sql
+    source: bigquery-vendite
+    description: >-
+      Converte richieste in linguaggio naturale italiano in query SQL BigQuery.
+      
+      Dataset: vendite_dataset
+      Tabella: vendite (id, data_vendita, prodotto, quantita, prezzo_unitario, totale, cliente, regione)
+      
+      Esempi supportati:
+      - "vendite dal X al Y"
+      - "totale vendite per periodo"  
+      - "prodotti più venduti"
+      - "statistiche per regione"
+      - "clienti top"
+      
+      IMPORTANTE: Rispondi sempre in italiano e formatta i risultati in modo leggibile.
+    parameters:
+      - name: natural_language_query
+        type: string
+        description: Richiesta dell'utente in linguaggio naturale italiano
+
+  # Tool per schema info
+  schema-info:
+    kind: bigquery-get-table-info
+    source: bigquery-vendite
+    description: Ottieni informazioni sullo schema delle tabelle disponibili
+    parameters:
+      - name: dataset_id
+        type: string
+        description: ID del dataset
+      - name: table_id  
+        type: string
+        description: ID della tabella
+
+toolsets:
+  vendite-assistant:
+    - vendite-nl2sql
+    - schema-info
